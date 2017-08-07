@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
+namespace _06.Fish_Statistics
+{
+	class Program
+	{
+		static void Main(string[] args)
+		{
+		
+			var regex = @"(?<tail>>+)*<(?<body>\(+)(?<status>[x|'|-])>";
+			var text = Console.ReadLine();
+			var matches = Regex.Matches(text, regex);
+			var count = 1;
+			if (matches.Count > 0)
+			{
+
+				foreach (Match match in matches)
+				{
+					Console.WriteLine($"Fish {count}: {match.Value}");
+					var tail = match.Groups["tail"].Value.Length;//.Value
+					var tailType = "";
+
+					if (tail > 5)
+					{
+						tailType = "Long";
+					}
+					else if (tail > 1)
+					{
+						tailType = "Medium";
+					}
+					else if (tail == 1)
+					{
+						tailType = "Short";
+					}
+					else
+					{
+						tailType = "None";
+					}
+					var tailLengh = tail * 2;
+					if (tailType == "None")
+					{
+						Console.WriteLine(" Tail type: None");
+					}
+					else
+					{
+						Console.WriteLine($" Tail type: {tailType} ({tailLengh} cm)");
+					}
+
+					var body = match.Groups["body"].Value.Length;//value
+					var bodyType = "";
+
+					if (body > 10)
+					{
+						bodyType = "Long";
+					}
+					else if (body > 5)
+					{
+						bodyType = "Medium";
+					}
+					else
+					{
+						bodyType = "Short";
+					}
+
+					var bodyLengh = body * 2;
+
+					Console.WriteLine($" Body type: {bodyType} ({bodyLengh} cm)");
+
+					var status = match.Groups["status"].Value;
+					if (status == "\'")
+					{
+						Console.WriteLine(" Status: Awake");
+					}
+					else if (status == "x")
+					{
+						Console.WriteLine(" Status: Dead");
+					}
+					else if (status == "-")
+					{
+						Console.WriteLine(" Status: Asleep");
+					}
+
+					count++;
+				}
+			}
+			else
+			{
+				Console.WriteLine("No fish found.");
+			}
+		}
+	}
+}
